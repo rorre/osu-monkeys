@@ -7,6 +7,8 @@
 // @include      http://osu.ppy.sh*
 // @include      https://osu.ppy.sh*
 // @run-at       document-end
+// @updateURL    https://github.com/rorre/osutimeago/raw/master/osutimeago.user.js
+// @downloadURL  https://github.com/rorre/osutimeago/raw/master/osutimeago.user.js
 // ==/UserScript==
 
 var $t = $.timeago;
