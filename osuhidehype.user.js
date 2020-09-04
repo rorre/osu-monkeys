@@ -60,8 +60,10 @@ function init() {
             var url = window.location.href
             lastUrl = url
             if ($("#osuHideInitialized").length) return
-            if(url.match(/http[s]:\/\/osu\.ppy\.sh\/beatmapsets\/.+\/discussion.*/)){
-                initApplication()
+            else {
+                if (url.match(/http[s]:\/\/osu\.ppy\.sh\/beatmapsets\/.+\/discussion.*/)) {
+                    initApplication()
+                }
             }
         }
     }, 1000);
