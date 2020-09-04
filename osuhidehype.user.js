@@ -52,12 +52,13 @@ async function initApplication() {
 }
 
 function init() {
-    var currentUrl;
+    var lastUrl;
 
     // Looping because... lazy loading page.
     setInterval(function(){
-        if(currentUrl != window.location.href){
+        if(lastUrl != window.location.href){
             var url = window.location.href
+            lastUrl = url
             if ($("#osuHideInitialized").length) return
             if(url.match(/http[s]:\/\/osu\.ppy\.sh\/beatmapsets\/.+\/discussion.*/)){
                 initApplication()
