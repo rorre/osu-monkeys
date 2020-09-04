@@ -5,12 +5,13 @@
 // @description  Add hide praise/hype button
 // @author       -Keitaro
 // @grant        none
-// @include      /http[s]:\/\/osu\.ppy\.sh\/beatmapsets\/.+\/discussion.*/
+// @include      http://osu.ppy.sh*
+// @include      https://osu.ppy.sh*
 // @run-at       document-idle
 // ==/UserScript==
 
 // TODO: Save hide state? seems like gonna be an unnecessary work to do but maybe, just maybe /shrug
-function initApplication() {
+async function initApplication() {
     // lol nice meme
     // lazy to make complex shit so lemme just copy paste my html xd
     var checkbox_html = $('<label class="praisehide beatmap-discussions__toolbar-item beatmap-discussions__toolbar-item--link beatmap-discussion-new__notice-checkbox"><div class="osu-switch-v2"><input id="isPraiseHide" class="osu-switch-v2__input" type="checkbox"><span class="osu-switch-v2__content"></span></div>Hide all hype/praise</label>')
@@ -19,6 +20,7 @@ function initApplication() {
     // Busy wait until initial osu!js for rendering is done, else everything else will simply break
     while (toolbar.length == 0) {
         toolbar = $(".beatmap-discussions__toolbar-content--right")
+        await new Promise(r => setTimeout(r, 2000));
     }
 
     var praises;
@@ -44,13 +46,31 @@ function initApplication() {
         if (praises) praises.show()
         $("#isPraiseHide")[0].checked = false
     })
+
+    // Mark as initialized so we don't initialize it many times
+    $("body").prepend('<div id="osuHideInitialized"></div>')
+}
+
+function init() {
+    var currentUrl;
+
+    // Looping because... lazy loading page.
+    setInterval(function(){
+        if(currentUrl != window.location.href){
+            var url = window.location.href
+            if ($("#osuHideInitialized").length) return
+            if(url.match(/http[s]:\/\/osu\.ppy\.sh\/beatmapsets\/.+\/discussion.*/)){
+                initApplication()
+            }
+        }
+    }, 1000);
 }
 
 (function() {
     'use strict';
     document.onreadystatechange = function () {
         if (document.readyState === 'complete') {
-            initApplication();
+            init();
         }
     }
 })();
